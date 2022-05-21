@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-05-21T10:37:59+08:00</updated><id>/feed.xml</id><title type="html">Deng Shulong</title><subtitle>Life was easy until Linda H. approaching with Kung&apos;s This Girl.</subtitle><entry><title type="html">On FDBus’s incorrect comparison to SOME/IP</title><link href="/2022/05/21/thoughts-on-fdbus.html" rel="alternate" type="text/html" title="On FDBus’s incorrect comparison to SOME/IP" /><published>2022-05-21T00:00:00+08:00</published><updated>2022-05-21T00:00:00+08:00</updated><id>/2022/05/21/thoughts-on-fdbus</id><content type="html" xml:base="/2022/05/21/thoughts-on-fdbus.html"><![CDATA[<p>This week Gitee, a GitHub-like code hosting service from mainland China, suddenly blocks public access to all its opensource repositories. To resume the public access, repository owner must submit a legal statement and wait for manual approval.</p>
+
+<p>I generally don’t care about Gitee , but it reminds me of the IPC framework <a href="https://github.com/jeremyczhen/fdbus">FDBus</a> moved from GitHub to Gitee because the author thinks Github access is too slow. (Guess which one is slower now)</p>
+
+<p>In my humble oppion FDBus is a descent solution, simply the protobuf serialization makes it much easier to bind with upper layer applications. However, <a href="https://fdbus.readthedocs.io/en/latest/manual.html">FDBus manual site</a> lists a few incorrect comparison to <a href="https://www.autosar.org/fileadmin/user_upload/standards/foundation/1-0/AUTOSAR_PRS_SOMEIPProtocol.pdf">SOME/IP</a>, and here are my thoughts.</p>
+
+<h2 id="quotes-from-fdbus">Quotes from FDBus</h2>
+<p>C1.</p>
+<blockquote>
+  <p>In the automotive field where Linux and Ethernet are used more and more widely</p>
+</blockquote>
+
+<p>C2.</p>
+<blockquote>
+  <p>The application of Ethernet in vehicle have spawned SOME/IP…
+But as the name implies, it is based on the IP layer and does not perform well on a single machine</p>
+</blockquote>
+
+<p>C3.</p>
+<blockquote>
+  <p>GENIVI organization contributed vsomeip, but the activity is very low.</p>
+</blockquote>
+
+<p>C4.</p>
+<blockquote>
+  <p>SOME/IP is built for vehicle and has a narrow range of applications…impossible to expect an active community</p>
+</blockquote>
+
+<p>C5.</p>
+<blockquote>
+  <p>it is very likely that you have to pay for closed source software.</p>
+</blockquote>
+
+<p>C6.</p>
+<blockquote>
+  <p>High performance: point-to-point direct communication, not forwarded through a central hub or broker</p>
+</blockquote>
+
+<h2 id="opinions">Opinions</h2>
+<p>[C1] implies that FDBus is also targeting automotive field. Then [C2] brings out the limitation of SOME/IP, this is where things start getting weird: as its specification implies, SOME/IP targets “inter-ECU Client/Server Serialization”, so asking it to perform well on a single machine is obviously not reasonable. A proper rationale would be showing performance differences when both are running on IP layer. I guess the “High Performance[C6]” of single machine comes from utilizing point-to-point Unix domain socket.</p>
+
+<p>[C3] mentions vsomeip from GENIVI, which makes [C2] further way off: just like FDBus, vsomeip also utilizes point-to-point Unix domain socket to boost performance in a single machine. Thus using SOME/IP as underlying concept does not necessarily means you must runs it all over IP. The low activity is very true though, possibly because automotive industry lacks the habit of contributing back to its opensource upstream.</p>
+
+<p>[C4] seems legit as first galance, but this is also questionable: if low community engagement comes from its automotive purpose, then would FDBus attracts communities from other fields? Besides, I think if a software sparks in any field at all then it’s successful.</p>
+
+<p>For [C5], paying for closed source software often happens under follow scenarios, where FDBus does not definitively beat anyone:</p>
+<ul>
+  <li>Customer requirement</li>
+  <li>Security/Legal requirement</li>
+  <li>No currently available solution and no resource to DIY</li>
+</ul>
+
+<h2 id="addtional">Addtional</h2>
+<p>Other than points above, the biggest incompleteness of FDBus is the lack of protocol specification(deeper than introductory concept). This is exceptionally important for industrial adoption and community engagement, we need to be able to understand, review and improve what we use. <a href="https://www.autosar.org/fileadmin/user_upload/standards/foundation/1-0/AUTOSAR_PRS_SOMEIPProtocol.pdf">AUTOSAR’s specification</a> is already well-praised, <a href="https://dbus.freedesktop.org/doc/dbus-specification.html">dbus’s specification</a> is delightful.</p>
+
+<p>Speaking of protocol, SOME/IP is just a procotol specification, there is no need to bash it with a complete IPC framework implementation.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[This week Gitee, a GitHub-like code hosting service from mainland China, suddenly blocks public access to all its opensource repositories. To resume the public access, repository owner must submit a legal statement and wait for manual approval.]]></summary></entry></feed>
